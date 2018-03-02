@@ -93,3 +93,16 @@ tfidf = models.TfidfModel(corpus)
 model = models.LdaModel(corpus, id2word=dictionary, num_topics=100)
 
 import gensim
+import numpy as np
+from scipy.sparse import csr_matrix
+
+def bow_to_matrix(bow,lda_model):
+    result = np.zeros((len(bow),lda_model.get_topics().shape[0]),dtype=np.float64)
+    for i,each in enumerate(bow):
+        # each format as [(31,1),(38,1),(40,1)]
+        l = lda_model.get_document_topics(each) #l format as [(27, 0.20886971), (34, 0.17654318), (41, 0.50100213), (86, 0.060251668)]
+        a = [each[0] for each in l]
+        b = [each[1] for each in l]
+        result[i,a] = b     
+    result = csr_matrix(result)
+    return result
