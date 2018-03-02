@@ -65,7 +65,7 @@ for each in data:
     each["text"] = review_to_words(each["text"])
     clean_data["x"].append(each["text"])
     clean_data["y"].append(each["stars"])
-    bar.drawProgressBar(0/total)
+    bar.drawProgressBar(step/total)
     step +=1
 
 
