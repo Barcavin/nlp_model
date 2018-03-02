@@ -1,8 +1,9 @@
 import json
 import random
 import re
-path='C:\\Users\\kaiwend2\\Downloads\\nlp_model\\popcorn\\dataset\\review.json'
+path="./dataset/review.json"
 split_ratio = 0.8
+subset_num = 100000
 
 data = []
 with open(path,'r',encoding='utf-8') as f:
@@ -52,13 +53,21 @@ def review_to_words(raw_review):
     
     return(" ".join(meaningful_words))
 
+data = data[:subset_num]
 clean_data = dict()    
 clean_data["x"] = []
 clean_data["y"] = []
+
+import bar
+step=0
+total = len(data)
 for each in data:
     each["text"] = review_to_words(each["text"])
     clean_data["x"].append(each["text"])
     clean_data["y"].append(each["stars"])
+    bar.drawProgressBar(0/total)
+    step +=1
+
 
 from sklearn.model_selection import train_test_split
 
